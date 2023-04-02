@@ -22,4 +22,4 @@ The 3 UART controllers available on a chip UARTn, where n = 0, 1, and 2.
 
 ## UART Architecture
 
-<div align="center"><img src="image/UART_Basic_Structure.PNG" width = "400" alt="UART Basic Structure" align="center" /> </div>
+<div align="center"><img src="image/UART_Basic_Structure.PNG" width = 100% alt="UART Basic Structure" align="center" /> </div>
