@@ -9,6 +9,8 @@
 #include "freertos/queue.h"
 #include "driver/uart.h"
 #include "esp_log.h"
+#include "driver/gpio.h"
+
 
 static const char *TAG = "uart_events";
 
@@ -32,6 +34,26 @@ static const char *TAG = "uart_events";
 #define RD_BUF_SIZE (BUF_SIZE)
 static QueueHandle_t uart0_queue;
 
+#define BLINK_GPIO 2
+
+static uint8_t s_led_state = 0;
+
+/*-------------------------------------------------*/
+static void blink_led(void)
+{
+    /* Set the GPIO level according to the state (LOW or HIGH)*/
+    gpio_set_level(BLINK_GPIO, s_led_state);
+}
+
+static void configure_led(void)
+{
+    ESP_LOGI(TAG, "Example configured to blink GPIO LED!");
+    gpio_reset_pin(BLINK_GPIO);
+    /* Set the GPIO as a push/pull output */
+    gpio_set_direction(BLINK_GPIO, GPIO_MODE_OUTPUT);
+}
+/**--------------------------------------------------*/
+
 static void uart_event_task(void *pvParameters)
 {
     uart_event_t event;
@@ -52,6 +74,14 @@ static void uart_event_task(void *pvParameters)
                     uart_read_bytes(EX_UART_NUM, dtmp, event.size, portMAX_DELAY);
                     ESP_LOGI(TAG, "[DATA EVT]:");
                     uart_write_bytes(EX_UART_NUM, (const char*) dtmp, event.size);
+
+                    /**-----------------------------------------------------------*/
+                    ESP_LOGI(TAG, "Turning the LED %s!", s_led_state == true ? "ON" : "OFF");
+                    blink_led();
+                    /* Toggle the LED state */
+                    s_led_state = !s_led_state;                    
+                    /**-----------------------------------------------------------*/
+
                     break;
                 //Event of HW FIFO overflow detected
                 case UART_FIFO_OVF:
@@ -115,6 +145,8 @@ static void uart_event_task(void *pvParameters)
 
 void app_main(void)
 {
+    configure_led();
+    
     esp_log_level_set(TAG, ESP_LOG_INFO);
 
     /* Configure parameters of an UART driver,
