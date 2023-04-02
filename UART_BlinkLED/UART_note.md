@@ -57,9 +57,9 @@ __Wakeup_Ctrl__:
 
 ## UART RAM
 
-<div align="center"><img src="image/UART Shared RAM.PNG" width = 80% alt="UART Basic Structure" align="center" /> </div>
+<div align="center"><img src="image/UART Shared RAM.PNG" width = 65% alt="UART Basic Structure" align="center" /> </div>
 
-- 3 UART controllers share a 1024 × 8-bit RAM space.
+3 UART controllers share a 1024 × 8-bit RAM space:
 - RAM is allocated in different blocks: `One` block holds 128 × 8-bit data.
 - Tx_FIFO of UARTn can be extended by setting UARTn_TX_SIZE, while Rx_FIFO of UARTn can be extended by setting UARTn_RX_SIZE.
 - __NOTICE__: Extending the FIFO space of a UART controller may take up the FIFO space of another UART controller.
