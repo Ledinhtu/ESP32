@@ -4,6 +4,9 @@
 ## Overview
 The 3 UART controllers available on a chip UARTn, where n = 0, 1, and 2.
 
+<div align="center"><img src="image/ESP_PINOUT_UART.png" width = 60% alt="UART Basic Structure" align="center" /> </div>
+
+
 ## UART Features
 - Programmable baud rate
 - 1024 × 8-bit RAM shared by three UART **transmit-FIFOs** and **receive-FIFOs**
@@ -64,5 +67,8 @@ __Wakeup_Ctrl__:
 - Tx_FIFO of UARTn can be extended by setting UARTn_TX_SIZE, while Rx_FIFO of UARTn can be extended by setting UARTn_RX_SIZE.
 - __NOTICE__: Extending the FIFO space of a UART controller may take up the FIFO space of another UART controller.
 
-
+# 
+## TX
+- `tx_buffer_size = 0`: (CPU) data --> TX FIFO --> sent out
+- `tx_buffer_size > 0`: (CPU) data --(copy all)--> tx ring buffer --(UART ISR)--> TX FIFO (gradually) --> sent out
 
